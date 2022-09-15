@@ -221,6 +221,8 @@ describe("US-01 - Create and list reservations", () => {
       expect(response.status).toBe(400);
     });
 
+
+
     test("returns 400 if reservation_time is missing", async () => {
       const data = {
         first_name: "first",
