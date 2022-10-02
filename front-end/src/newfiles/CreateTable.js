@@ -5,7 +5,7 @@ import { useHistory } from "react-router-dom";
 import { createTable } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
 
-function CreateTable() {
+function CreateTable({ setTables }) {
 
     const initialFormState = {
         table_name: "",
@@ -29,13 +29,24 @@ function CreateTable() {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+
+        // Define the properties required
+        const { capacity } = formData;
     
         try {
 
-            await createTable(formData, abortContoller.signal);
+            // Convert people value to number
+            const capacityInt = parseInt(capacity);
+
+            // Create a new formData with changes to people data 
+            const newFormData = {
+                ...formData,
+                capacity: capacityInt
+            };
+
+            await createTable(newFormData, abortContoller.signal);
             setFormData({ ...initialFormState });
             history.push(`/dashboard`);
-            history.go(0);
 
         } catch (error) {
 

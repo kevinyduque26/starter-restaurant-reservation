@@ -1,13 +1,18 @@
 import React from "react";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { useEffect } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import ErrorAlert from "../layout/ErrorAlert";
-import { seatReservation } from "../utils/api";
-import { listReservations } from "../utils/api";
+import { seatReservation } from "../utils/api"
 import { listTables } from "../utils/api";
 
-function SeatReservation({ date }) {
+import { readReservation } from "../utils/api";
+
+
+function SeatReservation() {
+
+    const { reservation_id } = useParams();
 
     const initialFormState = {
         table_id: "",
@@ -15,115 +20,116 @@ function SeatReservation({ date }) {
     };
 
     const [formData, setFormData] = useState({ ...initialFormState });
-    const [reservations, setReservations] = useState([]);
+    const [reservation, setReservation] = useState([]);
     const [tables, setTables] = useState([]);
     const [error, setError] = useState(null);
 
-    // On Page Reload
+    const history = useHistory();
 
-    useEffect(loadTables, []);
-    useEffect(loadReservations, [date]);
+    useEffect(loadReservationAndTables, [reservation_id]);
+
+    function loadReservationAndTables() {
+
+        const abortController = new AbortController();
+        setError(null);
+    
+        readReservation(reservation_id, abortController.signal)
+            .then(setReservation)
+            .catch(setError);
+    
+        listTables(abortController.signal)
+            .then(setTables)
+            .catch(setError);
+    
+        return () => abortController.abort();
   
-    function loadTables() {
-      const abortController = new AbortController();
-      setError(null);
-      listTables(abortController.signal)
-        .then(setTables)
-        .catch(setError);
-      return () => abortController.abort();
     };
-  
-    function loadReservations() {
-      const abortController = new AbortController();
-      setError(null);
-      listReservations({ date }, abortController.signal)
-        .then(setReservations)
-        .catch(setError);
-      return () => abortController.abort();
-    };
-
-    // Handlers
-
-    const { reservation_id }= useParams();
 
     const handleChange = ({ target }) => {
-
         setFormData({
             [target.name]: target.value,
             reservation_id: reservation_id,
           });
-
     };
 
-    const history = useHistory();
-    const abortContoller = new AbortController();
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+
+        const abortController = new AbortController();
     
         try {
-
-            await seatReservation(formData.table_id, formData.reservation_id, abortContoller.signal);
+            await seatReservation(formData.table_id, formData.reservation_id, abortController.signal);
             setFormData({ ...initialFormState });
             history.push(`/dashboard`);
-
         } catch (error) {
-
             setError(error);
-
         };
     
         return () => {
-          abortContoller.abort();
+          abortController.abort();
         };
 
     };
 
-    let availableTables ="";
-    let options = "";
-
-    if (reservations.length > 1 && tables.length) {
-
-        const openReservation = reservations.find((reservation) => {
-            return reservation.reservation_id === Number(reservation_id);
-        });
-
-        function isAvailableAndHasCapacity(table) {
-            return table.capacity >= openReservation.people && !table.occupied;
-        };
-        availableTables = tables.filter(isAvailableAndHasCapacity);
-
-    };
-
-    if (availableTables) {
-        options = availableTables.map((table) => (
-            <option value={table.table_id} key={table.table_id}>
-                {table.table_name} - {table.capacity}
-            </option>
-        ));
-    };
+    const options = tables.map((table) => {
+        const disabled = Number(table.capacity) < Number(reservation.people) || table.occupied ? true : false;
+        return (
+          <option key={table.table_id} value={table.table_id} disabled={disabled}>
+            {table.table_name} - {table.capacity}
+          </option>
+        );
+    });
 
     return (
         <>  
-            <h1>Seat Reservation</h1>
-            {options ? (
-                <form onSubmit={handleSubmit}>
-                    <label htmlFor="table_id">Select Table</label>
-                    <select name="table_id" id="table_id" onChange={handleChange}>
-                        <option defaultValue>- Available Options -</option>
+            <form onSubmit={handleSubmit}>
+                <label htmlFor="table_id">
+                    Select Table
+                    <select 
+                        name="table_id" 
+                        id="table_id" 
+                        value={formData.table_id} 
+                        onChange={handleChange} 
+                        required={true}
+                    >
+                        <option>Select Table</option>
                         {options}
                     </select>
-                    <button type="submit">Submit</button>
-                    <button type="button" onClick={() => history.goBack()}>
-                        Cancel
-                    </button>
-                </form>
-            ) : (
-                <p>Loading...</p>
-            )}
+                </label>
+                <button type="submit">Submit</button>
+                <button type="button" onClick={() => history.goBack()}>
+                    Cancel
+                </button>
+            </form>
             <ErrorAlert error={error} />
         </>
     );
 };
 
 export default SeatReservation;
+
+    // useEffect(() => {
+    //     const abort = new AbortController();
+    
+    //     async function getReservation() {
+    //       try {
+    //         const response = await readReservation(reservation_id, abort.signal);
+    //         setReservation(response);
+    //       } catch (error) {
+    //         setError(error);
+    //       }
+    //     }
+    
+    //     async function getTables() {
+    //       try {
+    //         const response = await listTables(abort.signal);
+    //         setTables(response);
+    //       } catch (error) {
+    //         setError(error);
+    //       }
+    //     }
+    //     getReservation();
+    //     getTables();
+    //     return () => abort.abort();
+    // }, [reservation_id]);

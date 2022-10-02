@@ -11,6 +11,9 @@ import { useState } from "react";
 import CreateReservation from "../newfiles/CreateReservation";
 import CreateTable from "../newfiles/CreateTable"; 
 import SeatReservation from "../newfiles/SeatReservation";
+import Search from "../newfiles/Search";
+import EditReservation from "../newfiles/EditReservation";
+
 
 /**
  * Defines all the routes for the application.
@@ -23,6 +26,7 @@ import SeatReservation from "../newfiles/SeatReservation";
 function Routes() {
 
   const [date, setDate] = useState(today());
+
 
   const query = new URLSearchParams(window.location.search);
   const queryDate = query.get("date")
@@ -49,8 +53,14 @@ function Routes() {
         <Dashboard date={date} setDate={setDate} />
       </Route>
       <Route path={"/reservations/:reservation_id/seat"}>
-          <SeatReservation date={date} />
+        <SeatReservation />
       </Route> 
+      <Route path="/search">
+        <Search />
+      </Route>
+      <Route path="/reservations/:reservation_id/edit">
+        <EditReservation setDate={setDate} />
+      </Route>
       <Route>
         <NotFound />
       </Route>
@@ -60,37 +70,3 @@ function Routes() {
 
 export default Routes;
 
-  // useEffect(() => {
-  //   async function loadTables() {
-  //     const abortController = new AbortController();
-  //     setError(null);
-  //     await listTables(abortController.signal)
-  //       .then(setTables)
-  //       .catch(setError);
-  //     return () => abortController.abort();
-  //   };
-  //   loadTables()
-  // }, []);
-
-  // useEffect(() => {
-  //   async function loadReservations() {
-  //     const abortController = new AbortController();
-  //     setError(null);
-  //     await listReservations({ date }, abortController.signal)
-  //       .then(setReservations)
-  //       .catch(setError);
-  //     return () => abortController.abort();
-  //   };
-  //   loadReservations();
-  // }, [date]);
-
-  // useEffect(() => {
-  //   async function loadUsers() {
-  //     const response = await fetch(
-  //       "https://jsonplaceholder.typicode.com/users/1"
-  //     );
-  //     const userFromAPI = await response.json();
-  //     setUser(userFromAPI);
-  //   }
-  //   loadUsers();
-  // }, []);
