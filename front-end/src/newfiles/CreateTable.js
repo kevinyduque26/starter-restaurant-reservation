@@ -64,30 +64,36 @@ function CreateTable({ setTables }) {
         <>
             <h1>New Table</h1>
             <form onSubmit={handleSubmit}>
-                <label htmlFor="table_name">
-                    Table Name
-                    <input
-                        id="table_name"
-                        type="text"
-                        name="table_name"
-                        minlength="2"
-                        onChange={handleChange}
-                        value={formData.table_name}
-                    />
-                </label>
-                <label htmlFor="capacity">
-                    Capacity
-                    <input
-                        id="capacity"
-                        type="number"
-                        name="capacity"
-                        min="1"
-                        onChange={handleChange}
-                        value={formData.capacity}
-                    />
-                </label>
-                <button type="submit">Submit</button>
-                <button type="button" onClick={() => history.goBack()}>
+                <div className="form-group mt-3">
+                    <label htmlFor="table_name">
+                        Table Name
+                        <input
+                            id="table_name"
+                            type="text"
+                            name="table_name"
+                            minlength="2"
+                            onChange={handleChange}
+                            value={formData.table_name}
+                            className="form-control"
+                        />
+                    </label>
+                </div>
+                <div className="form-group mt-3">
+                    <label htmlFor="capacity">
+                        Capacity
+                        <input
+                            id="capacity"
+                            type="number"
+                            name="capacity"
+                            min="1"
+                            onChange={handleChange}
+                            value={formData.capacity}
+                            className="form-control"
+                        />
+                    </label>
+                </div>
+                <button type="submit" className="btn btn-primary mr-3">Submit</button>
+                <button type="button" className="btn btn-danger" onClick={() => history.goBack()}>
                     Cancel
                 </button>
             </form>

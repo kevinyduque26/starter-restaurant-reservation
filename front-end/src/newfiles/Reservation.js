@@ -46,11 +46,11 @@ function Reservation({ reservations }) {
         };
     };
 
-    const list = reservations.map((reservation, index) => (
-        <tr key={index}>
+    const list = reservations.map((reservation) => (
+        <tr key={reservation.reservation_id}>
+            <th scope="row">{`${reservation.first_name} ${reservation.last_name}`}</th>
             <td>{reservation.reservation_date}</td>
-            <td>{reservation.reservation_time}</td>
-            <td>{`${reservation.first_name} ${reservation.last_name}`}</td>
+            <td>{formatAsTime(reservation.reservation_time)}</td>
             <td>{reservation.people}</td>
             <td>{reservation.mobile_number}</td>
             <td data-reservation-id-status={reservation.reservation_id}>{reservation.status}</td>
@@ -68,6 +68,7 @@ function Reservation({ reservations }) {
                     type="button" 
                     data-reservation-id-cancel={reservation.reservation_id}
                     onClick={(event) => handleCancel(event, reservation)}
+                    className=" btn btn-danger"
                     >Cancel</button>
                 </td>
             ): (null)}
@@ -77,18 +78,18 @@ function Reservation({ reservations }) {
 
     return (
         <>
-            <table>
-                <thead>
+            <table class="table table-striped">
+                <thead className="thead-dark">
                     <tr>
-                        <th>Reservation Date</th>
-                        <th>Reservation Time</th>
-                        <th>Name</th>
-                        <th>People</th>
-                        <th>Phone Number</th>
-                        <th>Status</th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Time</th>
+                        <th scope="col">People</th>
+                        <th scope="col">Phone Number</th>
+                        <th scope="col">Status</th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
                     </tr>
                 </thead>
                 <tbody>

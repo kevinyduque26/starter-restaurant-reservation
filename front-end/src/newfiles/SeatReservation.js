@@ -73,7 +73,7 @@ function SeatReservation() {
     };
 
     const options = tables.map((table) => {
-        const disabled = Number(table.capacity) < Number(reservation.people) || table.occupied ? true : false;
+        const disabled = Number(table.capacity) < Number(reservation.people) || table.reservation_id ? true : false;
         return (
           <option key={table.table_id} value={table.table_id} disabled={disabled}>
             {table.table_name} - {table.capacity}
@@ -82,21 +82,25 @@ function SeatReservation() {
     });
 
     return (
-        <>  
+        <>
+            <h1>Seat reservation</h1>  
             <form onSubmit={handleSubmit}>
-                <label htmlFor="table_id">
-                    Select Table
-                    <select 
-                        name="table_id" 
-                        id="table_id" 
-                        value={formData.table_id} 
-                        onChange={handleChange} 
-                        required={true}
-                    >
-                        <option>Select Table</option>
-                        {options}
-                    </select>
-                </label>
+                <div className="form-group mt-3">
+                    <label htmlFor="table_id">
+                        Select Table
+                        <select 
+                            name="table_id" 
+                            id="table_id" 
+                            value={formData.table_id} 
+                            onChange={handleChange} 
+                            required={true}
+                            className="form-control"
+                        >
+                            <option>Select Table</option>
+                            {options}
+                        </select>
+                    </label>
+                </div>
                 <button type="submit">Submit</button>
                 <button type="button" onClick={() => history.goBack()}>
                     Cancel
@@ -108,28 +112,3 @@ function SeatReservation() {
 };
 
 export default SeatReservation;
-
-    // useEffect(() => {
-    //     const abort = new AbortController();
-    
-    //     async function getReservation() {
-    //       try {
-    //         const response = await readReservation(reservation_id, abort.signal);
-    //         setReservation(response);
-    //       } catch (error) {
-    //         setError(error);
-    //       }
-    //     }
-    
-    //     async function getTables() {
-    //       try {
-    //         const response = await listTables(abort.signal);
-    //         setTables(response);
-    //       } catch (error) {
-    //         setError(error);
-    //       }
-    //     }
-    //     getReservation();
-    //     getTables();
-    //     return () => abort.abort();
-    // }, [reservation_id]);

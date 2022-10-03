@@ -30,34 +30,43 @@ function Table({ tables, setTables, setReservations, date, setError }) {
         };
     };
 
-    const list = tables.map((table, index) => (
-        <tr key={index}>
-            <td>{table.table_name}</td>
-            <td>{table.capacity}</td>
-            <td data-table-id-status={table.table_id}>{table.reservation_id ? "Occupied" : "Free"}</td>
-            {table.reservation_id ? (
-                <td><button 
-                        type="button" 
-                        data-table-id-finish={table.table_id}
-                        onClick={handleFinish}
-                    >Finish</button></td>
-            ) : (null)}
-        </tr>
+    const list = tables.map((table) => (
+        <div className="col">
+            <div key={table.table_id} className="card">
+                <div className="card-header">
+                    {table.table_name}
+                    {table.reservation_id ? (
+                    <button 
+                            type="button" 
+                            data-table-id-finish={table.table_id}
+                            onClick={handleFinish}
+                            className="btn text-primary float-right"
+                        >Finish</button>
+                ) : (null)}
+                </div>
+                <div className="card-body">
+                    <div>
+                        <td>{`Capacity: ${table.capacity}`}</td>
+                    </div>
+                    <div>
+                        <td data-table-id-status={table.table_id}>{table.reservation_id ? "Occupied" : "Free"}</td>
+                    </div>
+                </div>           
+            </div>            
+        </div>
+
     ));
 
     return (
-        <table>
-            <thead>
-                <tr>
-                    <th>Table Name</th>
-                    <th>Capacity</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <tbody>
+        <>
+            <div className="mb-3">
+                <h3>Tables</h3>
+            </div>
+            <div className="row">
                 {list}
-            </tbody>
-        </table>
+            </div>           
+        </>
+
     );
 
 };

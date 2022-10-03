@@ -3,6 +3,8 @@ import { useState } from "react";
 import { searchForReservation } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
 import { Link } from "react-router-dom";
+import { formatAsDate } from "../utils/date-time";
+import { formatAsTime } from "../utils/date-time";
 
 
 function Search() {
@@ -88,30 +90,33 @@ function Search() {
         <>
             <h1>Find reservations</h1>
             <form onSubmit={handleSubmit}>
-                <label htmlFor="mobile_number">
-                    Search by phone number
-                    <input 
-                        id="mobile_number"
-                        type="text"
-                        name="mobile_number"
-                        placeholder="Enter a customer's phone number"
-                        onChange={handleChange}
-                        value={formData.mobile_number}
-                    />
-                </label>
-                <button type="submit">Find</button>
+                <div className="form-group mt-3">
+                    <label htmlFor="mobile_number">
+                        Search by phone number
+                        <input 
+                            id="mobile_number"
+                            type="text"
+                            name="mobile_number"
+                            placeholder="Enter a customer's phone number"
+                            onChange={handleChange}
+                            value={formData.mobile_number}
+                            className="form-control"
+                        />
+                    </label>
+                </div>
+                <button type="submit" className="btn btn-primary mb-5">Find</button>
             </form>
             {searchResults !== null && searchResults.length === 0 && <p>No reservations found</p>}
             {searchResults !== null && searchResults.length > 0 && (
-                    <table>
-                        <thead>
+                    <table className="table">
+                        <thead className="thead-dark">
                             <tr>
-                                <th>Reservation Date</th>
-                                <th>Reservation Time</th>
-                                <th>Name</th>
-                                <th>People</th>
-                                <th>Phone Number</th>
-                                <th>Status</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Date</th>
+                                <th scope="col">Time</th>
+                                <th scope="col">People</th>
+                                <th scope="col">Phone Number</th>
+                                <th scope="col">Status</th>
                                 <th></th>
                                 <th></th>
                             </tr>
@@ -119,9 +124,9 @@ function Search() {
                         <tbody>
                             {searchResults.map((reservation) => (
                                 <tr key={reservation.id}>
-                                    <td>{reservation.reservation_date}</td>
-                                    <td>{reservation.reservation_time}</td>
                                     <td>{`${reservation.first_name} ${reservation.last_name}`}</td>
+                                    <td>{formatAsDate(reservation.reservation_date)}</td>
+                                    <td>{formatAsTime(reservation.reservation_time)}</td>
                                     <td>{reservation.people}</td>
                                     <td>{reservation.mobile_number}</td>
                                     <td>{reservation.status}</td>

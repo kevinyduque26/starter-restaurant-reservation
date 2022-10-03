@@ -108,70 +108,88 @@ function CreateEditForm({ type, setDate, reservation }) {
   return (
     <>
       <form onSubmit={handleSubmit}>
-        <label htmlFor="first_name">
-          First Name
-          <input
-            id="first_name"
-            type="text"
-            name="first_name"
-            onChange={handleChange}
-            value={formData.first_name}
-          />
-        </label>
-        <label htmlFor="last_name">
-          Last Name
-          <input
-            id="last_name"
-            type="text"
-            name="last_name"
-            onChange={handleChange}
-            value={formData.last_name}
-          />
-        </label>
-        <label htmlFor="mobile_number">
-          Mobile Number
-          <input
-            id="mobile_number"
-            type="text"
-            name="mobile_number"
-            onChange={handleChange}
-            value={formData.mobile_number}
-          />
-        </label>
-        <label htmlFor="reservation_date">
-          Reservation Date
-          <input
-            id="reservation_date"
-            type="date"
-            name="reservation_date"
-            onChange={handleChange}
-            value={formData.reservation_date}
-          />
-        </label>
-        <label htmlFor="reservation_time">
-          Reservation Time
-          <input
-            id="reservation_time"
-            type="time"
-            name="reservation_time"
-            pattern="[0-9]{2}:[0-9]{2}"
-            onChange={handleChange}
-            value={formData.reservation_time}
-          />
-        </label>
-        <label htmlFor="people">
-          People
-          <input
-            id="people"
-            type="number"
-            name="people"
-            min="1"
-            onChange={handleChange}
-            value={formData.people}
-          />
-        </label>
-        <button type="submit">Submit</button>
-        <button type="button" onClick={() => history.goBack()}>
+        <div className="form-group mt-3">
+          <label htmlFor="first_name">
+            First Name
+            <input
+              id="first_name"
+              type="text"
+              name="first_name"
+              onChange={handleChange}
+              value={formData.first_name}
+              className="form-control"
+            />
+          </label>
+        </div>
+        <div className="form-group mt-3">
+          <label htmlFor="last_name">
+            Last Name
+            <input
+              id="last_name"
+              type="text"
+              name="last_name"
+              onChange={handleChange}
+              value={formData.last_name}
+              className="form-control"
+            />
+          </label>
+        </div>
+        <div className="form-group mt-3">
+          <label htmlFor="mobile_number">
+            Mobile Number
+            <input
+              id="mobile_number"
+              type="text"
+              name="mobile_number"
+              onChange={handleChange}
+              value={formData.mobile_number}
+              className="form-control"
+            />
+          </label>
+        </div>
+        <div className="form-group mt-3">
+          <label htmlFor="reservation_date">
+            Reservation Date
+            <input
+              id="reservation_date"
+              type="date"
+              name="reservation_date"
+              onChange={handleChange}
+              value={formData.reservation_date}
+              className="form-control"
+            />
+          </label>
+        </div>
+        <div className="form-group mt-3">
+          <label htmlFor="reservation_time">
+            Reservation Time
+            <input
+              id="reservation_time"
+              type="time"
+              name="reservation_time"
+              pattern="[0-9]{2}:[0-9]{2}"
+              onChange={handleChange}
+              value={formData.reservation_time}
+              className="form-control"
+            />
+          </label>
+        </div>
+        <div className="form-group mt-3">
+          <label htmlFor="people">
+            People
+            <input
+              id="people"
+              type="number"
+              name="people"
+              min="1"
+              onChange={handleChange}
+              value={formData.people}
+              className="form-control"
+            />
+          </label>
+        </div>
+        <button type="submit" className="btn btn-primary mr-3">Submit</button>
+        <button type="button" className="btn btn-danger" onClick={() => history.goBack()}>
           Cancel
         </button>
       </form>

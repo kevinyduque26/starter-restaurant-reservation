@@ -70,11 +70,13 @@ function Dashboard({ date, setDate }) {
   return (
     <main>
       <h1>Dashboard</h1>
-      <div className="d-md-flex mb-3">
-        <h4 className="mb-0">Reservations for date</h4>
-        <button type="button" onClick={handlePrevious}>Previous</button>
-        <button type="button" onClick={handleToday}>Today</button>
-        <button type="button" onClick={handleNext}>Next</button>
+      <div className="mt-3">
+        <h3>{`Reservations for ${date}`}</h3>
+      </div>      
+      <div className="mt-3 mb-3 d-flex justify-content-between">
+        <button type="button" className="btn" onClick={handlePrevious}>{`< Previous`}</button>
+        <button type="button" className="btn btn-secondary" onClick={handleToday}>Today</button>
+        <button type="button" className="btn" onClick={handleNext}>{`Next >`}</button>
       </div>
       <Reservation reservations={reservations} />
       <Table tables={tables} setTables={setTables} setReservations={setReservations} date={date} setError={setError}/>
