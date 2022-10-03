@@ -68,7 +68,7 @@ function Reservation({ reservations }) {
                     type="button" 
                     data-reservation-id-cancel={reservation.reservation_id}
                     onClick={(event) => handleCancel(event, reservation)}
-                    className=" btn btn-danger"
+                    className="btn btn-danger"
                     >Cancel</button>
                 </td>
             ): (null)}
